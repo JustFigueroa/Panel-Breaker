@@ -94,12 +94,14 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
         
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded){
+            AudioManager.instance.PlaySound(AudioManager.instance.jumpSound);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             thisJump--;
         }
 
         //Double Jump Feature, maybe pickup item can increase this value 
         if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && thisJump > 0){
+            AudioManager.instance.PlaySound(AudioManager.instance.jumpSound);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             thisJump--;
         }
@@ -137,10 +139,14 @@ public class PlayerController : MonoBehaviour
     }
     private void pushBackPlayer(float directionX, float directionY){
         AudioManager.instance.PlaySound(AudioManager.instance.hurtSound);
+        AudioManager.instance.PlaySound(AudioManager.instance.powSound);
+
         rb.linearVelocity = new Vector2(pushbackDirectionX * pushBackForce, pushbackDirectionY * pushBackForce);
         knockbackTimer = 0.5f;
     }
     private void StartDash(Vector2 direction){
+        AudioManager.instance.PlaySound(AudioManager.instance.dashSound);
+
         dashDirection = direction;
         dashTimer = dashDuration;
         if (direction == Vector2.up){
