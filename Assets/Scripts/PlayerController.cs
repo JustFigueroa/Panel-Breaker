@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     private void pushBackPlayer(float directionX, float directionY){
+        AudioManager.instance.PlaySound(AudioManager.instance.hurtSound);
         rb.linearVelocity = new Vector2(pushbackDirectionX * pushBackForce, pushbackDirectionY * pushBackForce);
         knockbackTimer = 0.5f;
     }
