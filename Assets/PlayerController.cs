@@ -4,20 +4,21 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f; //Speed the palyer moves left and right
     public float jumpForce = 5f; //Force applied when player jumps
-    private Vector2 dashDirection;
-    public float dashSpeed;
-    public float horizontalDashSpeed = 15f;
-    public float verticalDashSpeed = 10f;
+    private Vector2 dashDirection; //Direction player dashes in, set by double tap input
+    public float dashSpeed; //Speed player dashes in. Varies for horizontal / Vertical
+    public float horizontalDashSpeed = 15f; //Speed player dashes horizontally
+    public float verticalDashSpeed = 10f; //Speed player dashes vertically
 
-    public float dashDuration = 0.15f;
-    public float doubleTapTime = .25f;
-    private float lastLeftPress = -1f;
-    private float lastRightPress = -1f;
-    private float lastUpPress = -1f;
-    private float dashTimer;
+    public float dashDuration = 0.15f; //Duration of the dash in seconds
+    public float doubleTapTime = .25f; //Time window for double tap input to trigger dash
+    private float lastLeftPress = -1f; //Time of last left key press
+    private float lastRightPress = -1f; //Time of last right key press
+    private float lastUpPress = -1f; //Time of last up key press
+    private float dashTimer; //Timer for dash duration. when > 0 player is dashing and cant move
     public float knockbackTimer = 1f; //Time player is knocked back and cant move after being hit by hazard / enemy
     public float pushBackForce = 5f; //Force applied when hit by hazard / enemy
     public bool isGrounded;     //Verify player is grounded before jumping, also used for animation purposes
+    public bool isDashing;     //Verify player is dashing, also used for animation purposes
     private int thisJump = 2; //Number of possible player jumps. used for double jump feature
     private float pushbackDirectionX; // Direction player is pushed when hit by hazard / enemy X
     private float pushbackDirectionY; // Direction player is pushed when hit by hazard / enemy Y
@@ -147,6 +148,5 @@ public class PlayerController : MonoBehaviour
         else{
             dashSpeed = horizontalDashSpeed;
         }
-
     }
 }
