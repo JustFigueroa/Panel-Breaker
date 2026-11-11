@@ -1,19 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class AudioManager : MonoBehaviour
-{ public static AudioManager instance;
+public class PlayerAudioManager : MonoBehaviour
+{ public static PlayerAudioManager instance;
 
-    public AudioSource soundEffectAudio;
+    public AudioSource playerSoundEffectAudio;
+    public AudioClip runSound;
 
+    public AudioClip jumpGruntSound;
     public AudioClip jumpSound;
+
+    public AudioClip dashGruntSound;
     public AudioClip dashSound;
+
     public AudioClip hurtSound;
     public AudioClip deathSound;
-    public AudioClip winSound;
     public AudioClip enemyHurtSound;
     public AudioClip enemyDeathSound;
     public AudioClip powSound;
+
 
 
     private void Awake()
@@ -21,6 +26,7 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+
         }
         else
         {
@@ -30,6 +36,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(AudioClip sound)
     {
-        soundEffectAudio.PlayOneShot(sound);
+        playerSoundEffectAudio.PlayOneShot(sound);
     }
 }

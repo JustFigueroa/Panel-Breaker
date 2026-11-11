@@ -17,12 +17,14 @@ public class PlayerController : MonoBehaviour
     private float dashTimer; //Timer for dash duration. when > 0 player is dashing and cant move
     public float knockbackTimer = 1f; //Time player is knocked back and cant move after being hit by hazard / enemy
     public float pushBackForce = 5f; //Force applied when hit by hazard / enemy
-    public bool isGrounded;     //Verify player is grounded before jumping, also used for animation purposes
-    public bool isDashing;     //Verify player is dashing, also used for animation purposes
+    private bool isGrounded;     //Verify player is grounded before jumping, also used for animation purposes
+    private bool isDashing;     //Verify player is dashing, also used for animation purposes
+    private bool isRunning;   //Verify player is running, also used for animation purposes
     private int thisJump = 2; //Number of possible player jumps. used for double jump feature
     private float pushbackDirectionX; // Direction player is pushed when hit by hazard / enemy X
     private float pushbackDirectionY; // Direction player is pushed when hit by hazard / enemy Y
-
+    public float footstepInterval = 0.5f; // Interval between footstep sounds
+    private float footstepTimer = 0f; // Timer for footstep sounds
     private float health = 100; //Player health, when 0 player dies game over or something
     private Rigidbody2D rb;
 
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
     }
 
     // Update is called once per frame
@@ -52,6 +55,29 @@ public class PlayerController : MonoBehaviour
             return;
         }  
         
+        if (Mathf.Abs(rb.linearVelocity.x) > 0.01f && isGrounded)
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
+        Debug.Log("Is Running: " + isRunning);
+        if (isRunning)
+        {
+            footstepTimer -= Time.deltaTime;
+            if (footstepTimer <= 0f)
+            {
+                PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.runSound);
+                footstepTimer = footstepInterval;
+            }
+        }
+        else 
+        {
+            footstepTimer = 0f;
+        }
+
 
         //Player Movement    
         if (Input.GetKeyDown(KeyCode.A))
@@ -94,14 +120,14 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
         
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded){
-            AudioManager.instance.PlaySound(AudioManager.instance.jumpSound);
+            PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.jumpGruntSound);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             thisJump--;
         }
 
         //Double Jump Feature, maybe pickup item can increase this value 
         if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && thisJump > 0){
-            AudioManager.instance.PlaySound(AudioManager.instance.jumpSound);
+            PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.jumpGruntSound);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             thisJump--;
         }
@@ -138,14 +164,15 @@ public class PlayerController : MonoBehaviour
         }
     }
     private void pushBackPlayer(float directionX, float directionY){
-        AudioManager.instance.PlaySound(AudioManager.instance.hurtSound);
-        AudioManager.instance.PlaySound(AudioManager.instance.powSound);
+        PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.hurtSound);
+        PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.powSound);
 
         rb.linearVelocity = new Vector2(pushbackDirectionX * pushBackForce, pushbackDirectionY * pushBackForce);
         knockbackTimer = 0.5f;
     }
     private void StartDash(Vector2 direction){
-        AudioManager.instance.PlaySound(AudioManager.instance.dashSound);
+        PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.dashGruntSound);
+        //PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.dashSound);
 
         dashDirection = direction;
         dashTimer = dashDuration;
