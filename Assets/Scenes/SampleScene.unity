@@ -421,7 +421,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.696
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelSoundEffectAudio: {fileID: 597351577}
   winSound: {fileID: 0}
-  themeSound: {fileID: 8300000, guid: def015fa4aad34c41b7eb021675af03a, type: 3}
+  themeSound: {fileID: 8300000, guid: 8ea137ac037ae493dbec6db181efaf8e, type: 3}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,8 +1121,7 @@ MonoBehaviour:
   doubleTapTime: 0.25
   knockbackTimer: 1
   pushBackForce: 5
-  isGrounded: 0
-  isDashing: 0
+  footstepInterval: 0.5
 --- !u!1 &1501676555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,7 +1168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSoundEffectAudio: {fileID: 1501676558}
-  runSound: {fileID: 8300000, guid: 512e93bb4e4cb4a619427c1c6a3e1599, type: 3}
+  runSound: {fileID: 8300000, guid: b9cbc3e1eedf14048aa60c0517722a46, type: 3}
   jumpGruntSound: {fileID: 8300000, guid: 62366f183c2e1437a914775d43532d9e, type: 3}
   jumpSound: {fileID: 0}
   dashGruntSound: {fileID: 8300000, guid: 48b22a3c3217c4df490ee40f725ee2f6, type: 3}
