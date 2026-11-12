@@ -49,11 +49,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("WallOnLeft" + wallOnLeft);
-        Debug.Log("WallOnRight" + wallOnRight);
-        Debug.Log("isSliding" + isSliding);
-
-
         if (HandleHealthCheck()) return;
         if (HandleKnockbackCheck()) return;
         if (HandleDashCheck()) return;
@@ -74,7 +69,7 @@ public class PlayerController : MonoBehaviour
             canDashVert = true;
         }
         //hazard check used for knockback and health reduction
-        if (other.CompareTag("Hazard") || other.CompareTag("Enemy"))
+        if (other.CompareTag("Hazard"))
         {
             health -= 20;
             if (transform.position.x > other.transform.position.x)
