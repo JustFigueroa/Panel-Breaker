@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private float health = 100; //Player health, when 0 player dies game over or something
     //BASIC MOVEMENT VARIABLES//
+    float moveInput;
     public float moveSpeed = 5f; //Speed the palyer moves left and right
     public float footstepInterval = 0.5f; // Interval between footstep sounds
     private float footstepTimer = 0f; // Timer for footstep sounds
@@ -48,13 +49,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
+        Debug.Log("WallOnLeft" + wallOnLeft);
+        Debug.Log("WallOnRight" + wallOnRight);
+        Debug.Log("isSliding" + isSliding);
+
+
         if (HandleHealthCheck()) return;
         if (HandleKnockbackCheck()) return;
         if (HandleDashCheck()) return;
         
         HandleInput();
-
+        HandleWallSlide();
     }
 
 
@@ -82,6 +87,16 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Wall") && !isGrounded){
             isSliding = true;
+            if (thisJump <= 0)
+                thisJump++;
+            if (other.bounds.center.x < transform.position.x)
+            {
+                wallOnLeft = true;
+            }
+            else
+            {
+                wallOnRight = true;
+            }
         }
     }
 
@@ -93,6 +108,8 @@ public class PlayerController : MonoBehaviour
         }
         if (other.CompareTag("Wall")){
             isSliding = false;
+            wallOnLeft = false;
+            wallOnRight = false;
         }
     }
 
@@ -120,7 +137,7 @@ public class PlayerController : MonoBehaviour
     private void HandleInput()
     {
         //Horizontal Movement
-        float moveInput = Input.GetAxisRaw("Horizontal");
+        moveInput = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
         //Dash Logic
@@ -226,5 +243,23 @@ public class PlayerController : MonoBehaviour
         } 
         else isDashing = false;
         return isDashing;
+    }
+    private void HandleWallSlide()
+    {
+        if (!isSliding)
+        return;
+        if (rb.linearVelocity.y < -wallSlideSpeed)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, - wallSlideSpeed);
+        }
+        if (wallOnLeft && moveInput < 0f)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        }
+        if (wallOnRight && moveInput > 0f)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        }
+
     }
 }
