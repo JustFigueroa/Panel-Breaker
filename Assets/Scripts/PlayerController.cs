@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour
     public float horizontalDashSpeed = 15f; //Speed player dashes horizontally
     public float verticalDashSpeed = 10f; //Speed player dashes vertically
     public float dashDuration = 0.15f; //Duration of the dash in seconds
-    private float dashTimer; //Timer for dash duration. when > 0 player is dashing and cant move
     public float doubleTapTime = .25f; //Time window for double tap input to trigger dash
+    private float dashTimer; //Timer for dash duration. when > 0 player is dashing and cant move
     private float lastLeftPress = -1f; //Time of last left key press
     private float lastRightPress = -1f; //Time of last right key press
     private float lastUpPress = -1f; //Time of last up key press
@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour
     //END JUMP VARIABLES//
 
     //Bools used for verification checks and animation purposes;
-    private bool isGrounded, isDashing, isRunning, isSliding, isKnockedback, isDead, wallOnLeft, wallOnRight;  
-
+    private bool isGrounded, isDashing, isRunning, isSliding, isKnockedback, isDead;  
+    private bool canDashHor, canDashVert, wallOnLeft, wallOnRight;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -70,9 +70,11 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
             thisJump = 2;
+            canDashHor = true;
+            canDashVert = true;
         }
         //hazard check used for knockback and health reduction
-        if (other.CompareTag("Hazard"))
+        if (other.CompareTag("Hazard") || other.CompareTag("Enemy"))
         {
             health -= 20;
             if (transform.position.x > other.transform.position.x)
@@ -121,11 +123,15 @@ public class PlayerController : MonoBehaviour
         knockbackTimer = 0.5f;
     }
     private void StartDash(Vector2 direction){
+        if (dashTimer > 0f)
+        {
+            return;
+        }
         PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.dashGruntSound);
         //PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.dashSound);
-
         dashDirection = direction;
         dashTimer = dashDuration;
+
         if (direction == Vector2.up){
             dashSpeed = verticalDashSpeed;
         }
@@ -141,12 +147,13 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
         //Dash Logic
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && canDashHor)
         {
             if (Time.time - lastLeftPress <= doubleTapTime)
             {
                 StartDash(Vector2.left);
                 lastLeftPress = -1f;
+                canDashHor = false;
             }
             else
             {
@@ -154,11 +161,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.D)){
+        if (Input.GetKeyDown(KeyCode.D) && canDashHor){
             if (Time.time - lastRightPress <= doubleTapTime)
             {
                 StartDash(Vector2.right);
                 lastRightPress = -1f;
+                canDashHor = false;
+
             }
             else
             {
@@ -166,12 +175,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && canDashVert)
         {
             if(Time.time - lastUpPress <= doubleTapTime)
             {
                 StartDash(Vector2.up);
                 lastUpPress = -1f;
+                canDashVert = false;
             }
             else
             {
@@ -235,6 +245,7 @@ public class PlayerController : MonoBehaviour
     }
     private bool HandleDashCheck()
     {
+
         if (dashTimer > 0)
         {
             dashTimer -= Time.deltaTime;
