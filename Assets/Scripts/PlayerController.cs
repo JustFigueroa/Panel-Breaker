@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator anim;
+
     private float health = 100; //Player health, when 0 player dies game over or something
     //BASIC MOVEMENT VARIABLES//
     float moveInput;
@@ -39,10 +41,13 @@ public class PlayerController : MonoBehaviour
     //Bools used for verification checks and animation purposes;
     private bool isGrounded, isDashing, isRunning, isSliding, isKnockedback, isDead;  
     private bool canDashHor, canDashVert, wallOnLeft, wallOnRight;
+    private bool isFacingLeft = true;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
     }
 
@@ -64,6 +69,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Ground"))
         {
             isGrounded = true;
+            anim.SetBool("isGrounded", true);
             thisJump = 2;
             canDashHor = true;
             canDashVert = true;
@@ -84,6 +90,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Wall") && !isGrounded){
             isSliding = true;
+            anim.SetBool("isSliding", true);
             if (thisJump <= 0)
                 thisJump++;
             if (other.bounds.center.x < transform.position.x)
@@ -102,11 +109,13 @@ public class PlayerController : MonoBehaviour
     void OnTriggerExit2D(Collider2D other){
         if (other.CompareTag("Ground")){
            isGrounded = false;
+           anim.SetBool("isGrounded", false);
         }
         if (other.CompareTag("Wall")){
             isSliding = false;
             wallOnLeft = false;
             wallOnRight = false;
+            anim.SetBool("isSliding", false);
         }
     }
 
@@ -140,14 +149,25 @@ public class PlayerController : MonoBehaviour
         //Horizontal Movement
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        Debug.Log("Linear Velocity: " + rb.linearVelocity.x);
 
+        if (rb.linearVelocity.x < 0 && transform.localScale.x > 0){
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);   
+            isFacingLeft = true;
+            }
+        else if (rb.linearVelocity.x > 0 && transform.localScale.x < 0){
+             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);   
+             isFacingLeft = false;
+        }
         //Dash Logic
         if (Input.GetKeyDown(KeyCode.A) && canDashHor)
         {
+            
             if (Time.time - lastLeftPress <= doubleTapTime)
             {
                 StartDash(Vector2.left);
                 lastLeftPress = -1f;
+                if (!isGrounded)
                 canDashHor = false;
             }
             else
@@ -157,10 +177,13 @@ public class PlayerController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.D) && canDashHor){
+
+
             if (Time.time - lastRightPress <= doubleTapTime)
             {
                 StartDash(Vector2.right);
                 lastRightPress = -1f;
+                if (!isGrounded)
                 canDashHor = false;
 
             }
@@ -190,6 +213,7 @@ public class PlayerController : MonoBehaviour
             PlayerAudioManager.instance.PlaySound(PlayerAudioManager.instance.jumpGruntSound);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             thisJump--;
+            
         }
 
         //Double Jump Feature, maybe pickup item can increase this value 
@@ -202,8 +226,15 @@ public class PlayerController : MonoBehaviour
 
         //Run logic for sound and anim
         if (Mathf.Abs(rb.linearVelocity.x) > 0.01f && isGrounded)
+        {
             isRunning = true;
-        else isRunning = false;
+            anim.SetBool("isRunning", true);
+        }
+        else 
+        {
+            isRunning = false;
+            anim.SetBool("isRunning", false);
+        }
 
         if (isRunning)
         {
@@ -246,8 +277,15 @@ public class PlayerController : MonoBehaviour
             dashTimer -= Time.deltaTime;
             rb.linearVelocity = dashDirection * dashSpeed;
             isDashing = true;
+            anim.SetBool("isDashing", true);
+
         } 
-        else isDashing = false;
+        else 
+        {
+            isDashing = false;
+            anim.SetBool("isDashing", false);
+
+        }
         return isDashing;
     }
     private void HandleWallSlide()

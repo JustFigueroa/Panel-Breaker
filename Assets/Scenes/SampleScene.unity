@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 171661726}
+  - component: {fileID: 171661727}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -150,6 +151,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 708558598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &171661727
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171661725}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.1, y: 2.1}
+  m_Direction: 0
 --- !u!1 &488625703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,6 +1167,7 @@ GameObject:
   - component: {fileID: 1422543597}
   - component: {fileID: 1422543598}
   - component: {fileID: 1422543599}
+  - component: {fileID: 1422543600}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1207,7 +1246,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: -3232115031556655705, guid: 1036c54ca82bc4d8f958fae7301f50d4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1271,8 +1310,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: 0, y: 0.03}
+  m_Size: {x: 0.62, y: 1.27}
   m_Direction: 0
 --- !u!114 &1422543598
 MonoBehaviour:
@@ -1291,8 +1330,9 @@ MonoBehaviour:
   dashSpeed: 15
   horizontalDashSpeed: 30
   verticalDashSpeed: 7
-  dashDuration: 0.15
+  dashDuration: 0.1
   doubleTapTime: 0.25
+  dashTimer: 0
   knockbackTimer: 1
   KnockBackForce: 5
   wallSlideSpeed: 1
@@ -1311,6 +1351,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeAttackHitbox: {fileID: 1664873245}
   attackDuration: 0.2
+--- !u!95 &1422543600
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422543593}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9a4d57ebb05b8465e9b18b48e312d8bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1501676555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,8 +1592,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.21}
-  m_Size: {x: 1.14, y: 2.5}
+  m_Offset: {x: 0, y: 0.03}
+  m_Size: {x: 0.62, y: 1.27}
   m_Direction: 0
 --- !u!1 &1664873245
 GameObject:
@@ -1545,7 +1607,7 @@ GameObject:
   - component: {fileID: 1664873248}
   m_Layer: 0
   m_Name: PlayerMeleeHitbox
-  m_TagString: Untagged
+  m_TagString: PlayerHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
