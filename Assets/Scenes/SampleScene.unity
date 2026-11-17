@@ -1246,12 +1246,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3232115031556655705, guid: 1036c54ca82bc4d8f958fae7301f50d4, type: 3}
+  m_Sprite: {fileID: 7781202394294830402, guid: 9e57f8b9d2cdb4bcdb3a78217b2591fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.5, y: 1.31}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1332,7 +1332,6 @@ MonoBehaviour:
   verticalDashSpeed: 7
   dashDuration: 0.1
   doubleTapTime: 0.25
-  dashTimer: 0
   knockbackTimer: 1
   KnockBackForce: 5
   wallSlideSpeed: 1
@@ -1351,6 +1350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeAttackHitbox: {fileID: 1664873245}
   attackDuration: 0.2
+  arielAttackDuration: 2
 --- !u!95 &1422543600
 Animator:
   serializedVersion: 7
@@ -1611,7 +1611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1664873246
 Transform:
   m_ObjectHideFlags: 0
@@ -1661,7 +1661,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.45, y: 0}
+  m_Offset: {x: 0.45, y: 0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1671,7 +1671,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.47, y: 1.76}
+  m_Size: {x: 0.92, y: 0.87}
   m_EdgeRadius: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

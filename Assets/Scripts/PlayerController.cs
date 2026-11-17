@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     //Bools used for verification checks and animation purposes;
     private bool isGrounded, isDashing, isRunning, isSliding, isKnockedback, isDead;  
     private bool canDashHor, canDashVert, wallOnLeft, wallOnRight;
-    private bool isFacingLeft = true;
+    private bool isFacingLeft = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -95,10 +95,12 @@ public class PlayerController : MonoBehaviour
                 thisJump++;
             if (other.bounds.center.x < transform.position.x)
             {
+
                 wallOnLeft = true;
             }
             else
             {
+
                 wallOnRight = true;
             }
         }
@@ -149,8 +151,6 @@ public class PlayerController : MonoBehaviour
         //Horizontal Movement
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-        Debug.Log("Linear Velocity: " + rb.linearVelocity.x);
-
         if (rb.linearVelocity.x < 0 && transform.localScale.x > 0){
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);   
             isFacingLeft = true;
@@ -254,6 +254,7 @@ public class PlayerController : MonoBehaviour
     {        
         if (health <= 0)
         {
+        anim.SetBool("isDead", true);
         Destroy(this);
         isDead = true;
         }
@@ -265,8 +266,13 @@ public class PlayerController : MonoBehaviour
         if (knockbackTimer > 0f){
                 knockbackTimer -= Time.deltaTime;
                 isKnockedback = true;
+                anim.SetBool("isKnockedback", true);
         }
-        else isKnockedback = false;
+        else
+        {
+            isKnockedback = false;
+            anim.SetBool("isKnockedback", false);
+        }
         return isKnockedback;
     }
     private bool HandleDashCheck()
@@ -277,13 +283,18 @@ public class PlayerController : MonoBehaviour
             dashTimer -= Time.deltaTime;
             rb.linearVelocity = dashDirection * dashSpeed;
             isDashing = true;
-            anim.SetBool("isDashing", true);
+            if (dashDirection.x == -1 || dashDirection.x == 1)
+                anim.SetBool("isDashingHor", true);
+            else if (dashDirection.y == 1)
+                anim.SetBool("isDashingVert", true);
 
         } 
         else 
         {
             isDashing = false;
-            anim.SetBool("isDashing", false);
+            anim.SetBool("isDashingHor", false);
+            anim.SetBool("isDashingVert", false);
+
 
         }
         return isDashing;
@@ -305,5 +316,9 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
         }
 
+    }
+    public bool GetIsGrounded()
+    {
+        return isGrounded;      
     }
 }
