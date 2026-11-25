@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     //START KNOCKBACK VARIABLES//
     private float KnockbackDirectionX; // Direction player is pushed when hit by hazard / enemy X
     private float KnockbackDirectionY; // Direction player is pushed when hit by hazard / enemy Y
-    public float knockbackTimer = 1f; //Time player is knocked back and cant move after being hit by hazard / enemy
+    public float knockbackTimer = 0f; //Time player is knocked back and cant move after being hit by hazard / enemy
     public float KnockBackForce = 5f; //Force applied when hit by hazard / enemy
     //END KNOCKBACKVARIABLES//
     //START WALLSLIDE VARIABLES//
