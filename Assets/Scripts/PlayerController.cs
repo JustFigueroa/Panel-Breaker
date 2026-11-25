@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Isgrounded" + isGrounded);
         if (HandleHealthCheck()) return;
         if (HandleKnockbackCheck()) return;
         if (HandleDashCheck()) return;
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         //Ground check used for jump feature and animation purposes also resets jump counter
-        if (other.CompareTag("Ground"))
+        if (other.CompareTag("Ground") || other.CompareTag("BreakableFloor"))
         {
             isGrounded = true;
             anim.SetBool("isGrounded", true);
@@ -109,7 +110,7 @@ public class PlayerController : MonoBehaviour
 
 
     void OnTriggerExit2D(Collider2D other){
-        if (other.CompareTag("Ground")){
+        if (other.CompareTag("Ground") || other.CompareTag("BreakableFloor")){
            isGrounded = false;
            anim.SetBool("isGrounded", false);
         }
